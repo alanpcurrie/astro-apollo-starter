@@ -1,0 +1,17 @@
+---
+import type { CarItem } from '@data/types';
+import * as styles from "./Row.css";
+
+interface Props {
+  item: CarItem;
+}
+
+const { item } = Astro.props;
+const { size = "medium" } = Astro.props;
+---
+
+<tr class:list={[styles.root, styles.size[size]]}>
+    <td class:list={[styles.text]}>{item.id}</td>
+    <td class:list={[styles.twStyle]}>{item.make}</td>
+    <td>{item.model}</td>
+<tr/>

@@ -1,0 +1,42 @@
+{
+  "name": "astro-graphql-starter",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.8.4",
+    "@astrojs/node": "^6.0.2",
+    "@astrojs/react": "^3.0.3",
+    "@astrojs/tailwind": "^5.0.2",
+    "@astrojs/ts-plugin": "^1.2.0",
+    "@nanostores/react": "^0.7.1",
+    "@types/react": "^18.2.31",
+    "@types/react-dom": "^18.2.14",
+    "@vanilla-extract/css": "^1.13.0",
+    "@vanilla-extract/vite-plugin": "^3.9.0",
+    "astro": "^3.2.0",
+    "graphql": "^16.8.1",
+    "graphql-yoga": "^4.0.5",
+    "nanostores": "^0.9.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.0.24",
+    "vitest": "^0.34.6"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^6.9.0",
+    "eslint": "^8.52.0",
+    "eslint-plugin-astro": "^0.29.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "graphql-tag": "^2.12.6",
+    "prettier": "^3.0.3",
+    "prettier-plugin-astro": "^0.12.0"
+  }
+}
