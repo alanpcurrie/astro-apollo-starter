@@ -1,6 +1,6 @@
 ---
-import client from "../lib/apollo-client";
-import { gql } from "graphql-tag";
+// import client from "../lib/apollo-client";
+// import { gql } from "graphql-tag";
 
 // Styles
 import "../styles/main.css";
@@ -8,21 +8,22 @@ import "../styles/main.css";
 // Components
 import CartRow from "../components/CarRow.astro";
 
-import type { CarItem } from "../data/types";
+// import type { CarItem } from "../data/types";
+import cars from "../data/cars";
 
-const { data, loading } = await client.query({
-  query: gql`
-    query Car {
-      car {
-        id
-        make
-        model
-      }
-    }
-  `,
-});
+// const { data, loading } = await client.query({
+//   query: gql`
+//     query Car {
+//       car {
+//         id
+//         make
+//         model
+//       }
+//     }
+//   `,
+// });
 
-const carItems: Array<CarItem> = data.car;
+// const carItems: Array<CarItem> = data.car;
 ---
 
 <html lang="en">
@@ -36,26 +37,17 @@ const carItems: Array<CarItem> = data.car;
   <body>
     <h1>Welcome to Astro Cars</h1>
     <p>Fastest furious cars below</p>
-
-    {loading && <p>Loading your cars...</p>}
-
-    {
-      !loading && (
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Make</th>
-              <th>Model</th>
-            </tr>
-          </thead>
-          <tbody>
-            {carItems.map((item) => (
-              <CartRow item={item} />
-            ))}
-          </tbody>
-        </table>
-      )
-    }
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Make</th>
+          <th>Model</th>
+        </tr>
+      </thead>
+      <tbody>
+        {cars.map((item) => <CartRow item={item} />)}
+      </tbody>
+    </table>
   </body>
 </html>

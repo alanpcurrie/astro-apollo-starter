@@ -5,10 +5,7 @@ import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'hybrid',
-  adapter: node({
-    mode: 'standalone'
-  }),
+  output: 'static',
   integrations: [tailwind()],
   vite: {
     plugins: [vanillaExtractPlugin()],
