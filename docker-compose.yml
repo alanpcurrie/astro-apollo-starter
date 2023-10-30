@@ -1,0 +1,17 @@
+# Specifies the Docker Compose file format version being used.
+version: "3.8"
+# The `services` key defines the services that make up your application.
+services:
+  # Production service configuration
+  app:
+    # Details for building the production container.
+    build:
+      context: .
+      # Specifies the Dockerfile for the production environment.
+      dockerfile: Dockerfile
+    # Port mapping between the host and the container.
+    ports:
+      - "4321:4321"
+    # Environment variables to set within the container.
+    environment:
+      - NODE_ENV=production

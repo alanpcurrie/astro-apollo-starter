@@ -3,12 +3,13 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "vitest"
+    "test": "vitest",
+    "setup:devtools": "pnpm add -D commitizen cz-emoji-conventional semantic-release husky lint-staged eslint prettier @commitizen/config-cli @semantic-release/changelog @semantic-release/git codecov && pnpm add eslint-config-prettier eslint-plugin-prettier && npx commitizen init cz-emoji-conventional --save-dev && pnpm add --dev @semantic-release/npm && pnpm add --dev @types/jest jest ts-jest && pnpm add --dev codecov && pnpm setup:husky"
   },
   "dependencies": {
     "@apollo/client": "^3.8.6",
