@@ -10,7 +10,7 @@ import { localPoint } from '@visx/event';
 import * as styles from "./Radar.css";
 
 const Radar = ({ blips }: { blips: Array<Blip> }) => {
-    const width = 800;
+    const width = 900;
     const height = 800;
     const centerX = width / 2;
     const centerY = height / 2;
@@ -67,7 +67,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
         const quadrantBaseAngle = (quadrants[blip.quadrant] - 1) * (Math.PI / 2);
         const anglePerBlip = (Math.PI / 2) / totalBlipsInRing;
         const angle = quadrantBaseAngle + anglePerBlip * ringIndex;
-        const innerRadius = (ringStatus[blip.ring] - 1) * (radius / Object.keys(ringStatus).length);
+        const innerRadius = (ringStatus[blip.ring] - 1) * (radius / Object.keys(ringStatus).length - 110);
         const outerRadius = Math.min(ringStatus[blip.ring] * (radius / Object.keys(ringStatus).length), maxRadius);
         const ringRadius = (innerRadius + outerRadius);
 
