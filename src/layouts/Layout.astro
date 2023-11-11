@@ -1,0 +1,29 @@
+---
+import * as styles from "./Radar.css";
+import { ViewTransitions } from "astro:transitions";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Tech Radar</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    <div class:list={[styles.container]}>
+      <div class:list={[styles.sideColumn]}>
+        <slot name="left" />
+      </div>
+      <div class:list={[styles.radarColumn]}>
+        <slot name="center" />
+
+        <div class:list={[styles.sideColumn]}>
+          <slot name="right" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

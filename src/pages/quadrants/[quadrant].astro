@@ -1,0 +1,42 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { blipsStore } from "../../stores/radarStore";
+
+export async function getStaticPaths() {
+  const quadrants = {
+    tools: "Tools",
+    techniques: "Techniques",
+    platforms: "Platforms",
+    "languages-frameworks": "languages-frameworks",
+  };
+  return Object.keys(quadrants).map((quadrant) => {
+    return {
+      params: { quadrant: quadrant },
+    };
+  });
+}
+
+const quadrant = Astro.params.quadrant;
+const blips = blipsStore
+  .get()
+  .filter((blip) => blip.quadrant.toLowerCase() === quadrant.toLowerCase());
+---
+
+<Layout>
+  <h1 slot="left">
+    {quadrant}
+  </h1>
+
+  <div slot="center">
+    {
+      blips.map((blip) => (
+        <div>
+          <h2>{blip.name}</h2>
+          <p>{blip.description}</p>
+          <p>Ring: {blip.ring}</p>
+        </div>
+      ))
+    }
+  </div>
+  <h1 slot="right">{quadrant}</h1>
+</Layout>

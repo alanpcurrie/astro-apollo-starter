@@ -1,0 +1,33 @@
+---
+import * as styles from "./QuadrantNav.css.ts";
+---
+
+<div class:list={[styles.radarWrapper]}>
+  <div class:list={[styles.quadrantsOverlay]}>
+    <section class:list={[styles.quadrant, styles.topLeft]} id="tools">
+      <a href="/quadrants/tools">
+        <h2>Tools<span class:list={[styles.chevron]}>></span></h2>
+      </a>
+    </section>
+    <section class:list={[styles.quadrant, styles.topRight]} id="techniques">
+      <a href="/quadrants/techniques">
+        <h2>Techniques <span class:list={[styles.chevron]}></span></h2>
+      </a>
+    </section>
+    <section class:list={[styles.quadrant, styles.bottomLeft]} id="platforms">
+      <a href="/quadrants/platforms">
+        <h2>Platforms <span class:list={[styles.chevron]}></span></h2>
+      </a>
+    </section>
+    <section
+      class:list={[styles.quadrant, styles.bottomRight]}
+      id="/quadrants/anguages-frameworks"
+    >
+      <a href="/quadrants/languages-frameworks">
+        <h2>
+          Languages and frameworks <span class:list={[styles.chevron]}></span>
+        </h2>
+      </a>
+    </section>
+  </div>
+</div>
