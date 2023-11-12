@@ -1,112 +1,68 @@
-# Astro GraphQL Starter
+# Astro Tech Radar
 
-Welcome to the `astro-graphql-starter`! This is a starter kit for those looking to build applications using Astro with GraphQL integration.
+`astro-tech-radar` This project is a tech radar built using Astro, focusing on modern web development practices and simplicity.
 
 ## Features
 
-- **Astro**: Build faster websites with less client-side JavaScript.
-- **Apollo Client**: State management library for JavaScript that enables you to manage both local and remote data with GraphQL.
-- **TailwindCSS**: Utility-first CSS framework for rapid UI development.
-- **NanoStores**: Simple state management for React.
-- **GraphQL Yoga**: A fully-featured GraphQL Server with a focus on easy setup, performance & great developer experience.
-- **Vanilla Extract**: Zero-runtime Stylesheets-in-TypeScript.
-- **React**: A JavaScript library for building user interfaces.
-- **ViTest**: Testing utility for Vite projects.
+- **Astro**: Utilizes Astro for efficient and fast static site generation.
+- **TailwindCSS**: Leverages TailwindCSS for rapid and responsive UI development.
+- **Vanilla Extract**: Implements Zero-runtime Stylesheets-in-TypeScript for a powerful CSS-in-JS experience.
+- **React**: Uses React for building interactive user interfaces.
+- **NanoStores**: Simple and effective state management for React.
+- **ViTest**: Efficient testing framework for Vite projects.
+- **CLI Tool**: Includes a custom CLI tool to create Architectural Decision Records (ADRs) as MDX files.
 
-## Setup
+## Getting Started
+
+### Setup
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/alanpcurrie/astro-graphql-starter.git
-cd astro-graphql-starter
-```
+   ```bash
+   git clone https://github.com/alan-p-currie/astro-apollo-starter.git
+   cd astro-apollo-starter
+   ```
 
 2. Install the dependencies:
 
-```bash
-pnpm install
-```
+   ```bash
+   pnpm install
+   ```
 
----
+### Available Scripts
 
-Certainly. Here's a cohesive section on Docker for your README:
+- `pnpm run dev` or `pnpm run start`: Starts the app in development mode.
+- `pnpm run build`: Builds the app for production.
+- `pnpm run preview`: Serves a preview of the built production app.
+- `pnpm run test`: Executes tests using ViTest.
+- `pnpm run create:adr`: Creates a new ADR file in the `src/pages/adrs` directory.
 
----
+### Creating an ADR
 
-## Docker Setup
-
-Running your application with Docker ensures a consistent environment, regardless of where Docker is running. Here's how you can get the app up and running with Docker:
-
-### 1. Build the Docker image
-
-To create a Docker image of your application, use the following command:
+To create a new ADR file:
 
 ```bash
-docker build -t astro-node:v1 .
+pnpm run create:adr ADR_FILE_NAME
 ```
 
-This command:
+Replace `ADR_FILE_NAME` with the desired name for your ADR file. This command will create an MDX file in the `src/pages/adrs` directory with the current timestamp and predefined ADR headings.
 
-- Uses the `docker build` command to create an image.
-- Assigns the tag `astro-node:v1` to the image with the `-t` flag.
-- Takes the current directory (`.`) as the build context. Docker looks for the `Dockerfile` in this directory to define how the image should be built.
+## Project Structure
 
-### 2. Run the Docker container
-
-Once the image is built, you can start a container from that image:
-
-```bash
-docker run -p 4321:4321 astro-node:v1
-```
-
-This will:
-
-- Start a new container from the `astro-node:v1` image.
-- Map port `4321` inside the container to port `4321` on your host machine.
-
-Visit `http://localhost:4321` in your browser to access the app running inside the Docker container.
-
-### 3. Docker Compose (Optional)
-
-If you prefer using Docker Compose, you can leverage the provided `docker-compose.yml` file:
-
-- Build the images and start the services:
-
-```bash
-docker-compose up --build
-```
-
-To stop the services:
-
-```bash
-docker-compose down
-```
-
-This method is handy when dealing with multi-container applications.
-
----
-
-## Available Scripts
-
-- `pnpm dev` or `pnpm start`: Runs the app in development mode.
-- `pnpm build`: Builds the app for production.
-- `pnpm preview`: Runs a preview of the built production app.
-- `pnpm test`: Run the tests using ViTest.
+- `src/`: Contains the source code for the project.
+- `src/pages/`: Astro pages, including the ADRs created by the CLI tool.
+- `src/components/`: React components used within the project.
 
 ## Dependencies
 
-This project uses various packages to provide a rich development and user experience. Here's an overview of the main dependencies:
+This project uses various packages for development and runtime:
 
-- **Astro Core**: `astro`, `@astrojs/node`, `@astrojs/react`, `@astrojs/tailwind`, `@astrojs/ts-plugin`.
-- **State Management & Data Fetching**: `@apollo/client`, `graphql`, `graphql-yoga`, `nanostores`, `@nanostores/react`.
-- **UI & Styling**: `tailwindcss`, `@vanilla-extract/css`, `@vanilla-extract/vite-plugin`.
+- **Astro & Plugins**: `astro`, `@astrojs/mdx`, `@astrojs/react`, `@astrojs/tailwind`, `@astrojs/ts-plugin`.
+- **UI & Styling**: `tailwindcss`, `@vanilla-extract/css`, `@vanilla-extract/recipes`, `@vanilla-extract/sprinkles`, `@vanilla-extract/vite-plugin`.
 - **React & Types**: `react`, `react-dom`, `@types/react`, `@types/react-dom`.
-- **Testing**: `vitest`.
+- **State Management**: `@nanostores/react`, `@nanostores/logger`, `@nanostores/persistent`.
+- **Testing & Other Utilities**: `vitest`, `chalk`, `ts-pattern`, `@visx/*`.
 
 ## Development Tools
 
-To ensure a consistent codebase and improve developer experience, this project uses:
-
-- **Linting**: `eslint`, `@typescript-eslint/parser`, `eslint-plugin-astro`, `eslint-plugin-jsx-a11y`.
-- **Formatting**: `prettier`, `prettier-plugin-astro`.
+- **Linting & Formatting**: `eslint`, `@typescript-eslint/parser`, `eslint-plugin-astro`, `eslint-plugin-jsx-a11y`, `prettier`, `prettier-plugin-astro`.

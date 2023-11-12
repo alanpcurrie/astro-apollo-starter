@@ -1,5 +1,5 @@
 {
-  "name": "astro-graphql-starter",
+  "name": "astro-tech-radar",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -9,13 +9,11 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest",
-    "setup:devtools": "pnpm add -D commitizen cz-emoji-conventional semantic-release husky lint-staged eslint prettier @commitizen/config-cli @semantic-release/changelog @semantic-release/git codecov && pnpm add eslint-config-prettier eslint-plugin-prettier && npx commitizen init cz-emoji-conventional --save-dev && pnpm add --dev @semantic-release/npm && pnpm add --dev @types/jest jest ts-jest && pnpm add --dev codecov && pnpm setup:husky"
+    "create:adr": "node createAdr.js"
   },
   "dependencies": {
     "@apollo/client": "^3.8.6",
     "@astrojs/mdx": "^1.1.4",
-    "@astrojs/netlify": "^3.0.3",
-    "@astrojs/node": "^6.0.3",
     "@astrojs/react": "^3.0.4",
     "@astrojs/tailwind": "^5.0.2",
     "@astrojs/ts-plugin": "^1.2.0",
@@ -38,9 +36,7 @@
     "@visx/tooltip": "^3.3.0",
     "@visx/zoom": "^3.3.0",
     "astro": "^3.5.2",
-    "graphql": "^16.8.1",
-    "graphql-tag": "^2.12.6",
-    "graphql-yoga": "^4.0.5",
+    "chalk": "^5.3.0",
     "nanostores": "^0.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

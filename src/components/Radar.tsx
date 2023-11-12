@@ -3,11 +3,12 @@ import { Group } from '@visx/group';
 import { Circle } from '@visx/shape';
 import { Text } from '@visx/text';
 import { Arc } from '@visx/shape';
+// import { Zoom } from '@visx/zoom';
 import type { Blip } from '@stores/radarStore';
 import React, { useMemo } from 'react';
 import { useTooltip, useTooltipInPortal } from '@visx/tooltip';
 import { localPoint } from '@visx/event';
-import * as styles from "./Radar.css";
+// import * as styles from "./Radar.css";
 
 const Radar = ({ blips }: { blips: Array<Blip> }) => {
     const width = 900;

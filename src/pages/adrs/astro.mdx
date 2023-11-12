@@ -1,4 +1,5 @@
 import Title from "@components/Title.astro";
+import * as styles from "./Adr.css";
 export const components = { h1: Title };
 
 export const authors = [
@@ -27,17 +28,23 @@ status: "Accepted";
 author: "Alan Currie";
 reviewers: ["Alan Currie"];
 ---
+```
 
-<h1>Astro Adr</h1>
+<h1 class:list={[styles.twStyle]}>Astro Adr</h1>
 
- # Implement Astro for Static Site Generation ## Context We need a static site generator
+# Implement Astro for Static Site Generation
+
+## Context We need a static site generator
+
 that supports modern web development practices and integrates well with our existing
 tech stack. Astro has been chosen for its performance benefits and its ability to
 render static HTML from components written in various frameworks. ## Decision We
 will use Astro as our static site generator for the new project. Astro allows us
 to write components in our preferred framework while handling the complexities of
-server-side rendering and hydration. ## Consequences - Improved load times due to
-static generation and partial hydration. - Increased developer productivity with
+server-side rendering and hydration.
+
+## Consequences
+
+Improved load times due to static generation and partial hydration. - Increased developer productivity with
 a component-based approach. - The need for the team to familiarize themselves with
 Astro and its ecosystem.
-```
