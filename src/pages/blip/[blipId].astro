@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { blipsStore } from "../../stores/radarStore";
 import { match, Pattern } from "ts-pattern";
+import * as styles from "./Blip.css";
 
 export async function getStaticPaths() {
   const blips = blipsStore.get();
@@ -21,14 +22,24 @@ const blip = match(blipId)
 ---
 
 <Layout>
-  <h1 slot="left">
+  <h1 class:list={[styles.twStyle]} slot="left">
     {blip?.name}
   </h1>
-  <h2 slot="left">{blip?.hasAdr ? "ADR link >" : "await adr"}</h2>
-  <h1 slot="center">
+  <h2 class:list={[styles.twStyle]} slot="left">
+    {
+      blip?.hasAdr ? (
+        <>
+          <a href="../adrs/astro">adr link</a>
+        </>
+      ) : (
+        "await adr"
+      )
+    }
+  </h2>
+  <h1 class:list={[styles.twStyle]} slot="center">
     {blip?.description}
   </h1>
-  <h1 slot="right">
+  <h1 class:list={[styles.twStyle]} slot="right">
     {blip?.ring}
   </h1>
 </Layout>

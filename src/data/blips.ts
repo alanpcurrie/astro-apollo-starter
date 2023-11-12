@@ -210,6 +210,16 @@ const Blips: Array<Blip> = [
     hasAdr: true,
     tags: ["Backend"],
   },
+  {
+    id: "23",
+    name: "Astro",
+    quadrant: "Platforms",
+    ring: "Adopt",
+    description:
+      "Astro builds fast content sites, powerful web applications, dynamic server APIs, and everything in-between.",
+    hasAdr: true,
+    tags: ["Frontend"],
+  },
 ];
 
 export default Blips;

@@ -28,7 +28,7 @@ export const container = style({
   display: "grid",
   gridTemplateColumns: "1fr 3fr 1fr",
   gap: "1rem",
-  background: "papayawhip",
+  background: "#0E1218",
   // height: "100vh",
 });
 export const sideColumn = style({

@@ -1,3 +1,4 @@
+import { margin } from "./Radar.css";
 // QuadrantNav.css.ts
 import { style } from "@vanilla-extract/css";
 
@@ -20,11 +21,13 @@ export const quadrantsOverlay = style({
 });
 
 export const quadrant = style({
-  width: "50%",
-  height: "50%",
+  width: "25%",
+  height: "25%",
   position: "relative",
   cursor: "pointer",
   transition: "background-color 0.3s",
+  padding: "1rem",
+  background: "#EEF5FC",
   ":hover": {
     backgroundColor: "rgba(255, 255, 255, 0.1)",
   },
@@ -43,19 +46,43 @@ export const chevron = style({
 export const topLeft = style({
   top: 0,
   left: 0,
+  ":hover": {
+    backgroundColor: "#E87D7D",
+  },
 });
 
 export const topRight = style({
   top: 0,
   right: 0,
+  ":hover": {
+    backgroundColor: "#B37DE8",
+  },
 });
 
 export const bottomLeft = style({
   bottom: 0,
   left: 0,
+  ":hover": {
+    backgroundColor: "#7DE8E8",
+  },
 });
 
 export const bottomRight = style({
   bottom: 0,
   right: 0,
+  ":hover": {
+    backgroundColor: "#B3E87D",
+  },
+});
+
+export const headingOne = style({
+  fontSize: "2rem",
+});
+
+export const radStyle = style({
+  background:
+    "linear-gradient(to right, hsl(280, 100%, 70%), hsl(240, 100%, 70%), hsl(200, 100%, 70%))",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  display: "inline",
 });

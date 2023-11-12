@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { blipsStore } from "../../stores/radarStore";
+import * as styles from "./Quadrant.css";
 
 export async function getStaticPaths() {
   const quadrants = {
@@ -23,7 +24,7 @@ const blips = blipsStore
 ---
 
 <Layout>
-  <h1 slot="left">
+  <h1 class:list={[styles.twStyle]} slot="left">
     {quadrant}
   </h1>
 
@@ -31,12 +32,12 @@ const blips = blipsStore
     {
       blips.map((blip) => (
         <div>
-          <h2>{blip.name}</h2>
-          <p>{blip.description}</p>
+          <h2 class:list={[styles.twStyle]}>{blip.name}</h2>
+          <p class:list={[styles.twStyle]}>{blip.description}</p>
           <p>Ring: {blip.ring}</p>
         </div>
       ))
     }
   </div>
-  <h1 slot="right">{quadrant}</h1>
+  <h1 class:list={[styles.twStyle]} slot="right">{quadrant}</h1>
 </Layout>

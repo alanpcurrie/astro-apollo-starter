@@ -3,17 +3,21 @@ import Radar from "@components/Radar";
 import GlobalStyles from "@components/GlobalStyles.astro";
 import { initializeBlipsStore } from "@stores/init";
 import { blipsStore } from "@stores/radarStore";
+// import { logger } from "@nanostores/logger";
 import Layout from "@layouts/Layout.astro";
 import QuadrantNav from "@components/QuadrantNav.astro";
 GlobalStyles;
 initializeBlipsStore();
 const blips = blipsStore.get();
+// let destroy = logger({
+//   log: blipsStore,
+// });
+// console.log("destory", destroy);
 ---
 
 <Layout>
-  <h1 slot="left">Welcome to an Astro tech radar</h1>
   <QuadrantNav slot="center" />
+  <!-- <h1 slot="left">Blips</h1> -->
   <Radar slot="center" blips={blips} client:load />
-
-  <h1 slot="right">Blips</h1>
+  <!-- <h1 slot="right">Blips</h1> -->
 </Layout>

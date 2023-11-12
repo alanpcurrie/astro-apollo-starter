@@ -63,6 +63,8 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
         { startAngle: 3 * Math.PI / 2 + gutter, endAngle: 2 * Math.PI - gutter },
     ] as const;
 
+
+
     const calculatePolarCoordinates = (blip: Blip, totalBlipsInRing: number, ringIndex: number) => {
         const quadrantBaseAngle = (quadrants[blip.quadrant] - 1) * (Math.PI / 2);
         const anglePerBlip = (Math.PI / 2) / totalBlipsInRing;
@@ -103,7 +105,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                 <Group top={centerY} left={centerX}>
                     {quadrantAngles.map((quadrant, i) => (
                         <Arc
-                            key={i}
+                            key={`quadrant,-${quadrant}=${i}`}
                             innerRadius={0}
                             outerRadius={radius}
                             startAngle={quadrant.startAngle}
@@ -127,9 +129,9 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                         return (
                             <>
                                 <Text
-                                    key={name}
+                                    key={`ring-${name}=${Math.random()}-1`}
                                     y={labelRadius}
-                                    dy=".3rem"
+                                    dy=".3"
                                     textAnchor="start"
                                     fill="black"
                                     fontSize={16}
@@ -138,9 +140,9 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                     {name}
                                 </Text>
                                 <Text
-                                    key={name}
+                                    key={`ring-${name}=${Math.random()}-2`}
                                     y={-labelRadius}
-                                    dy=".3rem"
+                                    dy=".3"
                                     textAnchor="end"
                                     fill="black"
                                     fontSize={16}
@@ -149,9 +151,9 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                     {name}
                                 </Text>
                                 <Text
-                                    key={name}
+                                    key={`ring-${name}=${Math.random()}-3`}
                                     x={labelRadius}
-                                    dy=".3rem"
+                                    dy=".3"
                                     textAnchor="start"
                                     fill="black"
                                     fontSize={16}
@@ -160,9 +162,9 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                     {name}
                                 </Text>
                                 <Text
-                                    key={name}
+                                    key={`ring-${name}=${Math.random()}-4`}
                                     x={-labelRadius}
-                                    dy=".3rem"
+                                    dy=".3"
                                     textAnchor="end"
                                     fill="black"
                                     fontSize={16}
@@ -188,19 +190,19 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                     // refactor to rings
                     {rings.map((ring, i) => (
                         <Circle
-                            key={ring}
+                            key={`ring-${ring}=${i}`}
                             r={(i + 1) * ringRadiusIncrement}
                             fill="none"
-                            stroke="white"
+                            stroke="#0E1218"
                         />
                     ))}
                     // refactor to rings blip layout
-                    {memoizedBlipPositions.map((blip) => {
+                    {memoizedBlipPositions.map((blip, i) => {
                         const { x, y } = blip.position;
                         const blipColor = quadrantColors[blip.quadrant];
 
                         return (
-                            <React.Fragment key={blip.id}>
+                            <React.Fragment key={`blip-${blip}=${i}`}>
                                 <a href={`/blip/${blip.id}`}>
                                     <Circle
                                         cx={x}
@@ -218,7 +220,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                         fontSize={10}
                                         textAnchor="middle"
                                         dy=".3em"
-                                        fill="white"
+                                        fill="#EEF5FC"
                                     >
                                         {blip.id}
                                     </Text>
@@ -239,7 +241,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
             </svg>
             {tooltipOpen && (
                 <TooltipInPortal
-                    key={Math.random()}
+                    key={`tooltip-${Math.random()}`}
                     top={tooltipTop}
                     left={tooltipLeft}
                 >

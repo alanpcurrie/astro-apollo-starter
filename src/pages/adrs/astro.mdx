@@ -6,7 +6,7 @@ export const authors = [
 ];
 export const published = new Date("2023-11-11");
 
-# Hello world!
+# FIrst ADR test
 
 Written by: {new Intl.ListFormat('en').format(authors.map(d => d.name))}.
 
@@ -14,12 +14,30 @@ Published on: {new Intl.DateTimeFormat('en', {dateStyle: 'long'}).format(publish
 
 ## Syntax highlighting
 
-We also support syntax highlighting in MDX out-of-the-box! This example uses our default [Shiki theme](https://github.com/shikijs/shiki). See the [MDX integration docs](https://docs.astro.build/en/guides/integrations-guide/mdx/#syntax-highlighting) for configuration options.
+syntax highlighting in MDX out-of-the-box!
+This example uses our default [Shiki theme](https://github.com/shikijs/shiki).
+See the [MDX integration docs](https://docs.astro.build/en/guides/integrations-guide/mdx/#syntax-highlighting) for configuration options.
 
 ```astro
 ---
 const weSupportAstro = true;
+id: "001";
+created: "2023-01-01";
+status: "Accepted";
+author: "Alan Currie";
+reviewers: ["Alan Currie"];
 ---
 
 <h1>Astro Adr</h1>
+
+ # Implement Astro for Static Site Generation ## Context We need a static site generator
+that supports modern web development practices and integrates well with our existing
+tech stack. Astro has been chosen for its performance benefits and its ability to
+render static HTML from components written in various frameworks. ## Decision We
+will use Astro as our static site generator for the new project. Astro allows us
+to write components in our preferred framework while handling the complexities of
+server-side rendering and hydration. ## Consequences - Improved load times due to
+static generation and partial hydration. - Increased developer productivity with
+a component-based approach. - The need for the team to familiarize themselves with
+Astro and its ecosystem.
 ```
