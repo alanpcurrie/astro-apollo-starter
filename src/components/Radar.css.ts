@@ -146,3 +146,64 @@ export const responsiveStyle = style({
     },
   },
 });
+
+export const position = style({
+  position: "relative",
+});
+
+export const btn = style({
+  margin: 0,
+  textAlign: "center",
+  border: "none",
+  background: "#2f2f2f",
+  color: "#888",
+  padding: "0 4px",
+  borderTop: "1px solid #0a0a0a",
+});
+
+export const btnLg = style({
+  fontSize: "12px",
+  lineHeight: 1,
+  padding: "4px",
+});
+
+export const btnZoom = style({
+  width: "26px",
+  fontSize: "22px",
+});
+
+export const btnBottom = style({
+  marginBottom: "1rem",
+});
+
+export const description = style({
+  fontSize: "12px",
+  marginRight: "0.25rem",
+});
+
+export const controls = style({
+  position: "absolute",
+  top: "15px",
+  right: "15px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-end",
+});
+
+export const miniMap = style({
+  position: "absolute",
+  bottom: "25px",
+  right: "15px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-end",
+});
+
+export const relative = style({
+  position: "relative",
+});
+
+export const z = style({
+  position: "relative",
+  zIndex: 1000,
+});

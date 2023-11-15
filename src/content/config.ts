@@ -1,4 +1,3 @@
-// 1. Import utilities from `astro:content`
 import { z, defineCollection } from "astro:content";
 
 const QuadrantEnum = z.enum([
@@ -21,7 +20,7 @@ const BlipSchema = z.object({
 });
 
 const AdrSchema = z.object({
-  id: z.string(),
+  id: reference("BlipSchema"),
   created: z.date(),
   status: z.string(),
   author: z.string(),

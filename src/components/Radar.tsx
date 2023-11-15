@@ -3,16 +3,21 @@ import { Group } from '@visx/group';
 import { Circle } from '@visx/shape';
 import { Text } from '@visx/text';
 import { Arc } from '@visx/shape';
-// import { Zoom } from '@visx/zoom';
+import { Zoom } from '@visx/zoom';
 import type { Blip } from '@stores/radarStore';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTooltip, useTooltipInPortal } from '@visx/tooltip';
 import { localPoint } from '@visx/event';
-// import * as styles from "./Radar.css";
+import { RectClipPath } from '@visx/clip-path';
+// import { scaleLinear } from '@visx/scale';
+// import { interpolateRainbow } from 'd3-scale-chromatic';
+import * as styles from "./Radar.css";
+
+const bg = '#0a0a0a';
 
 const Radar = ({ blips }: { blips: Array<Blip> }) => {
-    const width = 900;
-    const height = 800;
+    const width = 600;
+    const height = 600;
     const centerX = width / 2;
     const centerY = height / 2;
     const rings = ['Adopt', 'Trial', 'Assess', 'Hold'];
@@ -23,6 +28,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
     const numberOfRings = ringNames.length + 1;
     const ringWidth = radius / numberOfRings + 10;
     const maxRadius = Math.min(centerX, centerY);
+    const [showMiniMap, setShowMiniMap] = useState<boolean>(true);
 
     const { containerRef, TooltipInPortal } = useTooltipInPortal();
 
@@ -84,6 +90,16 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
         };
     };
 
+    const initialTransform = {
+        scaleX: 1.27,
+        scaleY: 1.27,
+        translateX: -211.62,
+        translateY: 162.59,
+        skewX: 0,
+        skewY: 0,
+    };
+
+
     const memoizedBlipPositions = useMemo(() => {
         return blips.map((blip, index) => {
             const { angle, radius } = calculatePolarCoordinates(blip, blips.length, index);
@@ -123,7 +139,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
 
     const Labels = () => {
         return (
-            <svg width={width} height={height}>
+            <svg width={width} height={height} >
                 <Group top={centerY} left={centerX}>
                     {ringNames.map((name, i) => {
                         const labelRadius = ringWidth * (i + 1);
@@ -183,79 +199,221 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
 
     return (
         <>
-            <svg width={width} height={height} ref={containerRef}>
-                <RadarChart />
-                <Labels />
-                <Group top={centerY} left={centerX}>
+            <Zoom<SVGSVGElement>
+                width={width}
+                height={height}
+                scaleXMin={1 / 2}
+                scaleXMax={4}
+                scaleYMin={1 / 2}
+                scaleYMax={4}
+                initialTransformMatrix={initialTransform}
+            >
+                {(zoom) => (
+                    <div className={styles.relative}>
+                        <svg
+                            width={width}
+                            height={height}
+                            style={{ cursor: zoom.isDragging ? 'grabbing' : 'grab', touchAction: 'none' }}
+                            ref={zoom.containerRef}
+                        >
+                            <RectClipPath id="zoom-clip" width={width} height={height} />
+                            <rect width={width} height={height} rx={14} fill={bg} />
+                            <g ref={containerRef} transform={zoom.toString()}>
 
-                    // refactor to rings
-                    {rings.map((ring, i) => (
-                        <Circle
-                            key={`ring-${ring}=${i}`}
-                            r={(i + 1) * ringRadiusIncrement}
-                            fill="none"
-                            stroke="#0E1218"
-                        />
-                    ))}
-                    // refactor to rings blip layout
-                    {memoizedBlipPositions.map((blip, i) => {
-                        const { x, y } = blip.position;
-                        const blipColor = quadrantColors[blip.quadrant];
+                                <RadarChart />
+                                <Labels />
+                                <Group top={centerY} left={centerX}>
 
-                        return (
-                            <React.Fragment key={`blip-${blip}=${i}`}>
-                                <a href={`/blip/${blip.id}`}>
-                                    <Circle
-                                        cx={x}
-                                        cy={y}
-                                        r={12}
-                                        fill={blipColor}
-                                        onMouseEnter={(event) => handleMouseOver(event, blip)}
-                                        onMouseOut={hideTooltip}
-                                    // onMouseMove={styles.hoverStyle}
+                                    {rings.map((ring, i) => (
+                                        <Circle
+                                            key={`ring-${ring}=${i}`}
+                                            r={(i + 1) * ringRadiusIncrement}
+                                            fill="none"
+                                            stroke="#0E1218"
+                                        />
+                                    ))}
+
+                                    <rect
+                                        width={width}
+                                        height={height}
+                                        rx={14}
+                                        fill="transparent"
+                                        onTouchStart={zoom.dragStart}
+                                        onTouchMove={zoom.dragMove}
+                                        onTouchEnd={zoom.dragEnd}
+                                        onMouseDown={zoom.dragStart}
+                                        onMouseMove={zoom.dragMove}
+                                        onMouseUp={zoom.dragEnd}
+                                        onMouseLeave={() => {
+                                            if (zoom.isDragging) zoom.dragEnd();
+                                        }}
+                                        onDoubleClick={(event) => {
+                                            const point = localPoint(event) || { x: 0, y: 0 };
+                                            zoom.scale({ scaleX: 1.1, scaleY: 1.1, point });
+                                        }}
                                     />
 
-                                    <Text
-                                        x={x}
-                                        y={y}
-                                        fontSize={10}
-                                        textAnchor="middle"
-                                        dy=".3em"
-                                        fill="#EEF5FC"
-                                    >
-                                        {blip.id}
-                                    </Text>
-                                </a>
-                                {/* <Text
-                                    x={x}
-                                    y={y - 10}
-                                    fontSize={12}
-                                    textAnchor="middle"
-                                    fill="black"
+
+                                    {memoizedBlipPositions.map((blip, i) => {
+                                        const { x, y } = blip.position;
+                                        const blipColor = quadrantColors[blip.quadrant];
+
+                                        return (
+                                            <React.Fragment key={`blip-${blip}=${i}`}>
+                                                <a className={styles.z} href={`/blip/${blip.id}`}>
+                                                    <Circle
+                                                        cx={x}
+                                                        cy={y}
+                                                        r={12}
+                                                        fill={blipColor}
+                                                        onMouseEnter={(event) => handleMouseOver(event, blip)}
+                                                        onMouseOut={hideTooltip}
+                                                        href={`/blip/${blip.id}`}
+
+
+                                                    />
+
+                                                    <Text
+                                                        x={x}
+                                                        y={y}
+                                                        fontSize={10}
+                                                        textAnchor="middle"
+                                                        dy=".3em"
+                                                        fill="#EEF5FC"
+                                                    >
+                                                        {blip.id}
+                                                    </Text>
+                                                </a>
+                                            </React.Fragment>
+                                        );
+                                    })}
+                                </Group>
+
+                            </g>
+                            {showMiniMap && (
+                                <g
+                                    clipPath="url(#zoom-clip)"
+                                    transform={`scale(0.25)
+                                     translate(${width * 4 - width - 60},
+                                        ${height * 4 - height - 60
+                                        })
+                  `}
                                 >
-                                    {blip.name}
-                                </Text> */}
-                            </React.Fragment>
-                        );
-                    })}
-                </Group>
-            </svg>
-            {tooltipOpen && (
-                <TooltipInPortal
-                    key={`tooltip-${Math.random()}`}
-                    top={tooltipTop}
-                    left={tooltipLeft}
-                >
-                    <div>
-                        <strong>{tooltipData?.name}</strong>
-                        <br />
-                        Quadrant: {tooltipData?.quadrant}
-                        <br />
-                        Ring: {tooltipData?.ring}
+                                    <rect width={width} height={height} fill="#1a1a1a" />
+                                    <RadarChart />
+                                    <Labels />
+                                    <Group top={centerY} left={centerX}>
+                                        {rings.map((ring, i) => (
+                                            <Circle
+                                                key={`ring-${ring}=${i}`}
+                                                r={(i + 1) * ringRadiusIncrement}
+                                                fill="none"
+                                                stroke="#0E1218"
+                                            />
+                                        ))}
+
+                                        {memoizedBlipPositions.map((blip, i) => {
+                                            const { x, y } = blip.position;
+                                            const blipColor = quadrantColors[blip.quadrant];
+
+                                            return (
+                                                <React.Fragment key={`blip-${blip}=${i}`}>
+                                                    <a className={styles.z} href={`/blip/${blip.id}`}>
+                                                        <Circle
+                                                            cx={x}
+                                                            cy={y}
+                                                            r={12}
+
+                                                            fill={blipColor}
+                                                            onMouseEnter={(event) => handleMouseOver(event, blip)}
+                                                            onMouseOut={hideTooltip}
+                                                            href={`/blip/${blip.id}`}
+
+                                                        />
+
+                                                        <Text
+                                                            x={x}
+                                                            y={y}
+                                                            fontSize={10}
+                                                            textAnchor="middle"
+                                                            dy=".3em"
+                                                            fill="#EEF5FC"
+                                                        >
+                                                            {blip.id}
+                                                        </Text>
+                                                    </a>
+                                                </React.Fragment>
+                                            );
+                                        })}
+                                    </Group>
+                                    <rect
+                                        width={width}
+                                        height={height}
+                                        fill="white"
+                                        fillOpacity={0.2}
+                                        stroke="white"
+                                        strokeWidth={4}
+                                        transform={zoom.toStringInvert()}
+                                    />
+                                </g>
+                            )}
+                        </svg>
+
+
+                        {tooltipOpen && (
+                            <TooltipInPortal
+                                key={`tooltip-${Math.random()}`}
+                                top={tooltipTop}
+                                left={tooltipLeft}
+                            >
+                                <div>
+                                    <strong>{tooltipData?.name}</strong>
+                                    <br />
+                                    Quadrant: {tooltipData?.quadrant}
+                                    <br />
+                                    Ring: {tooltipData?.ring}
+                                </div>
+                            </TooltipInPortal>
+                        )
+                        }
+                        <div className={styles.controls}>
+                            <button
+                                type="button"
+                                className={`${styles.btn} ${styles.btnZoom}`}
+                                onClick={() => zoom.scale({ scaleX: 1.2, scaleY: 1.2 })}
+                            >
+                                +
+                            </button>
+                            <button
+                                type="button"
+                                className={`${styles.btn} ${styles.btnZoom} ${styles.btnBottom}`}
+                                onClick={() => zoom.scale({ scaleX: 0.8, scaleY: 0.8 })}
+                            >
+                                -
+                            </button>
+                            <button type="button" className={`${styles.btn} ${styles.btnLg}`} onClick={zoom.center}>
+                                Center
+                            </button>
+                            <button type="button" className={`${styles.btn} ${styles.btnLg}`} onClick={zoom.reset}>
+                                Reset
+                            </button>
+                            <button type="button" className={`${styles.btn} ${styles.btnLg}`} onClick={zoom.clear}>
+                                Clear
+                            </button>
+                        </div>
+                        <div className={styles.miniMap}>
+                            <button
+                                type="button"
+                                className={`${styles.btn} ${styles.btnLg}`}
+                                onClick={() => setShowMiniMap(!showMiniMap)}
+                            >
+                                {showMiniMap ? 'Hide' : 'Show'} Mini Map
+                            </button>
+                        </div>
+
                     </div>
-                </TooltipInPortal>
-            )
-            }
+                )}
+            </Zoom>
         </>
     );
 };

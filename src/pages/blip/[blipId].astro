@@ -3,22 +3,32 @@ import Layout from "../../layouts/Layout.astro";
 import { blipsStore } from "../../stores/radarStore";
 import { match, Pattern } from "ts-pattern";
 import * as styles from "./Blip.css";
+import {
+  InferGetStaticParamsType,
+  InferGetStaticPropsType,
+  GetStaticPaths,
+} from "astro";
 
-export async function getStaticPaths() {
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+export const getStaticPaths = (async () => {
   const blips = blipsStore.get();
   return blips.map((blip) => {
     return {
       params: { blipId: blip.id },
+      props: { propId: blip.id },
     };
   });
-}
+}) satisfies GetStaticPaths;
 
 const blips = blipsStore.get();
-const blipId = Astro.params.blipId;
+const { blipId } = Astro.params as Params;
+// const { propId } = Astro.props;
 
 const blip = match(blipId)
   .with(Pattern.string, (id) => blips.find((b) => b.id === id))
-  .otherwise(() => undefined);
+  .exhaustive();
 ---
 
 <Layout>
