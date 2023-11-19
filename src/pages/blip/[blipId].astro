@@ -3,10 +3,10 @@ import Layout from "../../layouts/Layout.astro";
 import { blipsStore } from "../../stores/radarStore";
 import { match, Pattern } from "ts-pattern";
 import * as styles from "./Blip.css";
-import {
-  InferGetStaticParamsType,
-  InferGetStaticPropsType,
-  GetStaticPaths,
+import  {
+  type InferGetStaticParamsType,
+  type InferGetStaticPropsType,
+  type GetStaticPaths,
 } from "astro";
 
 type Params = InferGetStaticParamsType<typeof getStaticPaths>;
