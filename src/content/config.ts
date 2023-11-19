@@ -36,5 +36,5 @@ const combinedCollection = defineCollection({
 });
 
 export const collections = {
-  combined: combinedCollection,
+  adrs: combinedCollection,
 };

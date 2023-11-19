@@ -27,9 +27,11 @@ export const quadrant = style({
   cursor: "pointer",
   transition: "background-color 0.3s",
   padding: "1rem",
-  background: "#EEF5FC",
+  background: "black",
+  color: "rgba(175, 238, 238, 1)",
   ":hover": {
     backgroundColor: "rgba(255, 255, 255, 0.1)",
+    color: "black",
   },
 });
 

@@ -55,7 +55,28 @@ export const colors = createGlobalTheme(":root", {
   accent: "#94d2bd",
   background: "#e9d8a6",
   text: "#3d405b",
+  purpleLightest: "#e4d7f5",
+  purpleLight: "#cbb1e4",
+  purple: "#a390c1",
+  purpleDark: "#7a5f9e",
+  purpleDarkest: "#503d6e",
+  tealLight: "#c2f2ef",
+  teal: "#71e3e2",
+  tealDark: "#1dcbca",
+  tealDarkHover: "#01718f",
+  navy: "#003147",
+  greenLightest: "#ccfdce",
+  greenLight: "#9ef4a6",
+  green: "#5ee471",
+  greenHover: "#05823f",
+  greenDark: "#36cf57",
+  forestGreen: "#05823f",
 });
+
+// export const brandMain = style({
+//   backgroundColor: "var(--greenDark)",
+//   color: "var(--greenLightest)",
+// });
 
 export const typography = createGlobalTheme(":root", {
   fontSizes: {
@@ -68,7 +89,7 @@ export const typography = createGlobalTheme(":root", {
     medium: "500",
     bold: "700",
   },
-  fontFamily: "Arial, sans-serif",
+  fontFamily: "Satoshi, sans-serif",
 });
 
 export const spacing = createGlobalTheme(":root", {
@@ -206,4 +227,22 @@ export const relative = style({
 export const z = style({
   position: "relative",
   zIndex: 1000,
+});
+
+export const legendBoxStyle = style({
+  lineHeight: "0.9em",
+  color: "#efefef",
+  fontSize: "10px",
+  fontFamily: "Satoshi",
+  padding: "10px 10px",
+  float: "left",
+  border: "1px solid rgba(255, 255, 255, 0.3)",
+  borderRadius: "8px",
+  margin: "5px 5px",
+});
+
+export const legendTitleStyle = style({
+  fontSize: "12px",
+  marginBottom: "10px",
+  fontWeight: 100,
 });

@@ -1,35 +1,36 @@
-
-import { Group } from '@visx/group';
-import { Circle } from '@visx/shape';
-import { Text } from '@visx/text';
-import { Arc } from '@visx/shape';
-import { Zoom } from '@visx/zoom';
-import type { Blip } from '@stores/radarStore';
-import React, { useMemo, useState } from 'react';
-import { useTooltip, useTooltipInPortal } from '@visx/tooltip';
-import { localPoint } from '@visx/event';
-import { RectClipPath } from '@visx/clip-path';
+import { Group } from "@visx/group";
+import { Circle } from "@visx/shape";
+import { Text } from "@visx/text";
+import { Arc } from "@visx/shape";
+import { Zoom } from "@visx/zoom";
+import type { Blip } from "@stores/radarStore";
+import React, { useMemo, useState } from "react";
+import { useTooltip, useTooltipInPortal } from "@visx/tooltip";
+import { localPoint } from "@visx/event";
+import { RectClipPath } from "@visx/clip-path";
+import { scaleOrdinal } from "@visx/scale";
+import { LegendOrdinal, LegendItem, LegendLabel } from "@visx/legend";
+// import { withScreenSize, } from '@visx/responsive';
+// import { ScaleSVG } from '@visx/responsive';
 // import { scaleLinear } from '@visx/scale';
 // import { interpolateRainbow } from 'd3-scale-chromatic';
 import * as styles from "./Radar.css";
 
-const bg = '#0a0a0a';
-
 const Radar = ({ blips }: { blips: Array<Blip> }) => {
+    const bg = "#0a0a0a";
     const width = 600;
     const height = 600;
     const centerX = width / 2;
     const centerY = height / 2;
-    const rings = ['Adopt', 'Trial', 'Assess', 'Hold'];
+    const rings = ["Adopt", "Trial", "Assess", "Hold"];
     const ringRadiusIncrement = Math.min(centerX, centerY) / (rings.length + 1);
     const radius = Math.min(centerX, centerY);
-    const gutter = 0.00;
-    const ringNames = ['Adopt', 'Trial', 'Assess', 'Hold'];
+    const gutter = 0.002;
+    const ringNames = ["Adopt", "Trial", "Assess", "Hold"];
     const numberOfRings = ringNames.length + 1;
     const ringWidth = radius / numberOfRings + 10;
     const maxRadius = Math.min(centerX, centerY);
     const [showMiniMap, setShowMiniMap] = useState<boolean>(true);
-
     const { containerRef, TooltipInPortal } = useTooltipInPortal();
 
     const {
@@ -42,51 +43,69 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
     } = useTooltip<Blip>();
 
     const quadrants = {
-        'Tools': 1,
-        'Techniques': 2,
-        'Platforms': 3,
-        'languages-frameworks': 4
+        Tools: 1,
+        Techniques: 2,
+        Platforms: 3,
+        "languages-frameworks": 4,
     } as const;
 
     const ringStatus = {
-        'Adopt': 1,
-        'Trial': 2,
-        'Assess': 3,
-        'Hold': 4
+        Adopt: 1,
+        Trial: 2,
+        Assess: 3,
+        Hold: 4,
     } as const;
 
     const quadrantColors = {
-        'Tools': 'red',
-        'Techniques': 'green',
-        'Platforms': 'blue',
-        'languages-frameworks': 'orange'
+        Tools: 'rgba(0, 120, 212, 0.8)',
+        Techniques: 'rgba(227, 0, 140, 0.8)',
+        Platforms: 'rgba(0, 178, 148, 0.8)',
+        "languages-frameworks": 'rgba(255, 185, 0, 0.8)'
     } as const;
 
+    const quadrantTextColors = {
+        Tools: 'rgba(175, 238, 238, 1)',
+        Techniques: 'rgba(255, 182, 193, 1)',
+        Platforms: 'rgba(175, 238, 238, 1)',
+        "languages-frameworks": 'rgba(255, 182, 193, 1)',
+    } as const;
 
     const quadrantAngles = [
         { startAngle: gutter, endAngle: Math.PI / 2 - gutter },
         { startAngle: Math.PI / 2 + gutter, endAngle: Math.PI - gutter },
-        { startAngle: Math.PI + gutter, endAngle: 3 * Math.PI / 2 - gutter },
-        { startAngle: 3 * Math.PI / 2 + gutter, endAngle: 2 * Math.PI - gutter },
+        { startAngle: Math.PI + gutter, endAngle: (3 * Math.PI) / 2 - gutter },
+        { startAngle: (3 * Math.PI) / 2 + gutter, endAngle: 2 * Math.PI - gutter },
     ] as const;
 
-
-
-    const calculatePolarCoordinates = (blip: Blip, totalBlipsInRing: number, ringIndex: number) => {
+    const calculatePolarCoordinates = (
+        blip: Blip,
+        totalBlipsInRing: number,
+        ringIndex: number,
+    ) => {
         const quadrantBaseAngle = (quadrants[blip.quadrant] - 1) * (Math.PI / 2);
-        const anglePerBlip = (Math.PI / 2) / totalBlipsInRing;
+        const anglePerBlip = Math.PI / 2 / totalBlipsInRing;
         const angle = quadrantBaseAngle + anglePerBlip * ringIndex;
-        const innerRadius = (ringStatus[blip.ring] - 1) * (radius / Object.keys(ringStatus).length - 110);
-        const outerRadius = Math.min(ringStatus[blip.ring] * (radius / Object.keys(ringStatus).length), maxRadius);
-        const ringRadius = (innerRadius + outerRadius);
+        const innerRadius =
+            (ringStatus[blip.ring] - 1) *
+            (radius / Object.keys(ringStatus).length - 110);
+        const outerRadius = Math.min(
+            ringStatus[blip.ring] * (radius / Object.keys(ringStatus).length),
+            maxRadius,
+        );
+        const ringRadius = innerRadius + outerRadius;
 
         return { angle, radius: ringRadius };
-    }
+    };
 
-    const polarToCartesian = (centerX: number, centerY: number, angle: number, radius: number) => {
+    const polarToCartesian = (
+        centerX: number,
+        centerY: number,
+        angle: number,
+        radius: number,
+    ) => {
         return {
             x: centerX + radius * Math.cos(angle) - centerX,
-            y: centerY + radius * Math.sin(angle) - centerY
+            y: centerY + radius * Math.sin(angle) - centerY,
         };
     };
 
@@ -99,39 +118,206 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
         skewY: 0,
     };
 
+    const ordinalColorScale = scaleOrdinal({
+        domain: ["hold", "Asses", "Trial", "Adopt"],
+        range: ["#66d981", "#71f5ef", "#4899f1", "#7d81f6"],
+    });
+
+    const ordinalColor2Scale = scaleOrdinal({
+        domain: ["Platforms", "Languages", "Tools", "Techniques"],
+        range: ["#fae856", "#f29b38", "#e64357", "#8386f7"],
+    });
+
+    const radarColors = ['rgba(0, 120, 212, 0.2)', 'rgba(227, 0, 140, 0.2)', 'rgba(0, 178, 148, 0.2)', 'rgba(255, 185, 0, 0.2)'];
+    const radarStrokeColors = ['rgba(0, 120, 212, 0.5)', 'rgba(227, 0, 140, 0.5)', 'rgba(0, 178, 148, 0.5)', 'rgba(255, 185, 0, 0.5)'];
+
+    const legendGlyphSize = 16;
+    const events = false;
+
+    const clipPaths = [
+        "clipTopRight",
+        "clipTopLeft",
+        "clipBottomLeft",
+        "clipBottomRight",
+    ];
+
+    function LegendBase({
+        title,
+        children,
+    }: {
+        title: string;
+        children: React.ReactNode;
+    }) {
+        return (
+            <div className="legend">
+                <div className="title">{title}</div>
+                {children}
+                <style>
+                    {`
+                    .legend {
+                        line-height: 0.9em;
+                        color: #efefef;
+                        font-size: 10px;
+                        font-family: Satoshi;
+                        padding: 10px 10px;
+                        float: left;
+                        border: 1px solid rgba(255, 255, 255, 0.3);
+                        border-radius: 8px;
+                        margin: 5px 5px;
+                    }
+                    .title {
+                        font-size: 12px;
+                        margin-bottom: 10px;
+                        font-weight: 100;
+                    }
+                 `}
+                </style>
+            </div>
+        );
+    }
+
+    const Legend = () => {
+        return (
+            <LegendBase title="Blips">
+                <LegendOrdinal scale={ordinalColorScale}>
+                    {(labels) =>
+                        labels.map((label, i) => (
+                            <LegendItem
+                                key={`legend-${i}`}
+                                onClick={() => {
+                                    if (events) alert(`clicked: ${JSON.stringify(label)}`);
+                                }}
+                            >
+                                <svg
+                                    width={legendGlyphSize}
+                                    height={legendGlyphSize}
+                                    style={{ margin: "2px 0" }}
+                                >
+                                    <circle
+                                        fill={label.value}
+                                        r={legendGlyphSize / 2}
+                                        cx={legendGlyphSize / 2}
+                                        cy={legendGlyphSize / 2}
+                                    />
+                                </svg>
+                                <LegendLabel align="left" margin="0 4px">
+                                    {label.text}
+                                </LegendLabel>
+                            </LegendItem>
+                        ))
+                    }
+                </LegendOrdinal>
+            </LegendBase>
+        );
+    };
+
+    const LegendTwo = () => {
+        return (
+            <LegendBase title="Quadrants">
+                <LegendOrdinal scale={ordinalColor2Scale}>
+                    {(labels) =>
+                        labels.map((label, i) => (
+                            <LegendItem
+                                key={`legend-${i}`}
+                                onClick={() => {
+                                    if (events) alert(`clicked: ${JSON.stringify(label)}`);
+                                }}
+                            >
+                                <svg
+                                    width={legendGlyphSize}
+                                    height={legendGlyphSize}
+                                    style={{ margin: "2px 0" }}
+                                >
+                                    <defs>
+                                        <clipPath id="clipTopRight">
+                                            <path d="M 16,16 L 16,0 A 16,16 0 0 1 32,16 Z" />{" "}
+                                        </clipPath>
+
+                                        <clipPath id="clipTopLeft">
+                                            <path d="M 16,16 L 0,16 A 16,16 0 0 1 16,0 Z" />
+                                        </clipPath>
+
+                                        <clipPath id="clipBottomLeft">
+                                            <path d="M 16,16 L 16,32 A 16,16 0 0 1 0,16 Z" />
+                                        </clipPath>
+
+                                        <clipPath id="clipBottomRight">
+                                            <path d="M 16,16 L 32,16 A 16,16 0 0 1 16,32 Z" />
+                                        </clipPath>
+                                    </defs>
+                                    {clipPaths.map((clipPathId, index) => (
+                                        <circle
+                                            key={index}
+                                            fill={label.value}
+                                            r={legendGlyphSize}
+                                            cx={legendGlyphSize / 2}
+                                            cy={legendGlyphSize / 2}
+                                            clipPath={`url(#${clipPathId})`}
+                                        />
+                                    ))}
+                                </svg>
+                                <LegendLabel align="left" margin="0 4px">
+                                    {label.text}
+                                </LegendLabel>
+                            </LegendItem>
+                        ))
+                    }
+                </LegendOrdinal>
+            </LegendBase>
+        );
+    };
 
     const memoizedBlipPositions = useMemo(() => {
         return blips.map((blip, index) => {
-            const { angle, radius } = calculatePolarCoordinates(blip, blips.length, index);
-            return { ...blip, position: polarToCartesian(centerX, centerY, angle, radius) };
+            const { angle, radius } = calculatePolarCoordinates(
+                blip,
+                blips.length,
+                index,
+            );
+            return {
+                ...blip,
+                position: polarToCartesian(centerX, centerY, angle, radius),
+            };
         });
     }, [blips, centerX, centerY]);
 
-    const handleMouseOver = (event: React.MouseEvent<SVGElement>, datum: Blip) => {
+    const handleMouseOver = (
+        event: React.MouseEvent<SVGElement>,
+        datum: Blip,
+    ) => {
         const coordinates = localPoint(event.currentTarget, event);
         showTooltip({
             tooltipLeft: coordinates?.x,
             tooltipTop: coordinates?.y,
-            tooltipData: datum
+            tooltipData: datum,
         });
     };
 
     const RadarChart = () => {
         return (
-            <svg width={width} height={height} >
+            <svg width={width} height={height}>
                 <Group top={centerY} left={centerX}>
-                    {quadrantAngles.map((quadrant, i) => (
-                        <Arc
-                            key={`quadrant,-${quadrant}=${i}`}
-                            innerRadius={0}
-                            outerRadius={radius}
-                            startAngle={quadrant.startAngle}
-                            endAngle={quadrant.endAngle}
-                            padAngle={gutter}
-                            cornerRadius={0}
-                            fill={`hsl(${i * 90}, 70%, 70%)`}
-                        />
-                    ))}
+                    {quadrantAngles.map((quadrant, i) => {
+                        const fillColor = radarColors[i % radarColors.length];
+                        const strokeColor = radarStrokeColors[i % radarStrokeColors.length];
+                        return (
+                            <Arc
+                                key={`quadrant,-${quadrant}-${i}`}
+                                innerRadius={0}
+                                outerRadius={radius}
+                                startAngle={quadrant.startAngle}
+                                endAngle={quadrant.endAngle}
+                                padAngle={gutter}
+                                cornerRadius={0}
+                                fill={fillColor}
+                                stroke={strokeColor}
+                                strokeWidth={2.5}
+                                style={{
+                                    filter: 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2))', // Subtle shadow for depth
+                                }}
+                            />
+                        );
+                    })}
                 </Group>
             </svg>
         );
@@ -139,7 +325,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
 
     const Labels = () => {
         return (
-            <svg width={width} height={height} >
+            <svg width={width} height={height}>
                 <Group top={centerY} left={centerX}>
                     {ringNames.map((name, i) => {
                         const labelRadius = ringWidth * (i + 1);
@@ -150,7 +336,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                     y={labelRadius}
                                     dy=".3"
                                     textAnchor="start"
-                                    fill="black"
+                                    fill={quadrantTextColors.Tools}
                                     fontSize={16}
                                     fontWeight={900}
                                 >
@@ -161,7 +347,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                     y={-labelRadius}
                                     dy=".3"
                                     textAnchor="end"
-                                    fill="black"
+                                    fill={quadrantTextColors.Platforms}
                                     fontSize={16}
                                     fontWeight={900}
                                 >
@@ -172,7 +358,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                     x={labelRadius}
                                     dy=".3"
                                     textAnchor="start"
-                                    fill="black"
+                                    fill={quadrantTextColors["languages-frameworks"]}
                                     fontSize={16}
                                     fontWeight={900}
                                 >
@@ -183,7 +369,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                     x={-labelRadius}
                                     dy=".3"
                                     textAnchor="end"
-                                    fill="black"
+                                    fill={quadrantTextColors.Techniques}
                                     fontSize={16}
                                     fontWeight={900}
                                 >
@@ -199,6 +385,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
 
     return (
         <>
+
             <Zoom<SVGSVGElement>
                 width={width}
                 height={height}
@@ -210,26 +397,32 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
             >
                 {(zoom) => (
                     <div className={styles.relative}>
+                        {/* <ScaleSVG
+                            width={width}
+                            height={height}> */}
                         <svg
+                            ref={zoom.containerRef}
                             width={width}
                             height={height}
-                            style={{ cursor: zoom.isDragging ? 'grabbing' : 'grab', touchAction: 'none' }}
-                            ref={zoom.containerRef}
+                            style={{
+                                cursor: zoom.isDragging ? "grabbing" : "grab",
+                                touchAction: "none",
+                            }}
                         >
                             <RectClipPath id="zoom-clip" width={width} height={height} />
+                            <svg ref={containerRef} />
                             <rect width={width} height={height} rx={14} fill={bg} />
-                            <g ref={containerRef} transform={zoom.toString()}>
-
+                            <g transform={zoom.toString()}>
                                 <RadarChart />
                                 <Labels />
                                 <Group top={centerY} left={centerX}>
 
                                     {rings.map((ring, i) => (
                                         <Circle
-                                            key={`ring-${ring}=${i}`}
+                                            key={`ring-${ring}-${i}`}
                                             r={(i + 1) * ringRadiusIncrement}
                                             fill="none"
-                                            stroke="#0E1218"
+                                            stroke={radarStrokeColors[i % radarStrokeColors.length]} // Assign stroke color based on quadrant color
                                         />
                                     ))}
 
@@ -253,7 +446,6 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                         }}
                                     />
 
-
                                     {memoizedBlipPositions.map((blip, i) => {
                                         const { x, y } = blip.position;
                                         const blipColor = quadrantColors[blip.quadrant];
@@ -266,20 +458,20 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                                         cy={y}
                                                         r={12}
                                                         fill={blipColor}
-                                                        onMouseEnter={(event) => handleMouseOver(event, blip)}
+                                                        onMouseEnter={(event) =>
+                                                            handleMouseOver(event, blip)
+                                                        }
                                                         onMouseOut={hideTooltip}
                                                         href={`/blip/${blip.id}`}
-
-
                                                     />
 
                                                     <Text
                                                         x={x}
                                                         y={y}
-                                                        fontSize={10}
+                                                        fontSize={12}
                                                         textAnchor="middle"
                                                         dy=".3em"
-                                                        fill="#EEF5FC"
+                                                        fill="rgb(34, 39, 46)"
                                                     >
                                                         {blip.id}
                                                     </Text>
@@ -288,16 +480,14 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                         );
                                     })}
                                 </Group>
-
                             </g>
                             {showMiniMap && (
                                 <g
                                     clipPath="url(#zoom-clip)"
                                     transform={`scale(0.25)
                                      translate(${width * 4 - width - 60},
-                                        ${height * 4 - height - 60
-                                        })
-                  `}
+                                        ${height * 4 - height - 60})
+                            `}
                                 >
                                     <rect width={width} height={height} fill="#1a1a1a" />
                                     <RadarChart />
@@ -323,14 +513,13 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                                             cx={x}
                                                             cy={y}
                                                             r={12}
-
                                                             fill={blipColor}
-                                                            onMouseEnter={(event) => handleMouseOver(event, blip)}
+                                                            onMouseEnter={(event) =>
+                                                                handleMouseOver(event, blip)
+                                                            }
                                                             onMouseOut={hideTooltip}
                                                             href={`/blip/${blip.id}`}
-
                                                         />
-
                                                         <Text
                                                             x={x}
                                                             y={y}
@@ -358,7 +547,7 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                 </g>
                             )}
                         </svg>
-
+                        {/* </ScaleSVG > */}
 
                         {tooltipOpen && (
                             <TooltipInPortal
@@ -374,8 +563,8 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                     Ring: {tooltipData?.ring}
                                 </div>
                             </TooltipInPortal>
-                        )
-                        }
+                        )}
+
                         <div className={styles.controls}>
                             <button
                                 type="button"
@@ -391,13 +580,25 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                             >
                                 -
                             </button>
-                            <button type="button" className={`${styles.btn} ${styles.btnLg}`} onClick={zoom.center}>
+                            <button
+                                type="button"
+                                className={`${styles.btn} ${styles.btnLg}`}
+                                onClick={zoom.center}
+                            >
                                 Center
                             </button>
-                            <button type="button" className={`${styles.btn} ${styles.btnLg}`} onClick={zoom.reset}>
+                            <button
+                                type="button"
+                                className={`${styles.btn} ${styles.btnLg}`}
+                                onClick={zoom.reset}
+                            >
                                 Reset
                             </button>
-                            <button type="button" className={`${styles.btn} ${styles.btnLg}`} onClick={zoom.clear}>
+                            <button
+                                type="button"
+                                className={`${styles.btn} ${styles.btnLg}`}
+                                onClick={zoom.clear}
+                            >
                                 Clear
                             </button>
                         </div>
@@ -407,13 +608,15 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                 className={`${styles.btn} ${styles.btnLg}`}
                                 onClick={() => setShowMiniMap(!showMiniMap)}
                             >
-                                {showMiniMap ? 'Hide' : 'Show'} Mini Map
+                                {showMiniMap ? "Hide" : "Show"} Mini Map
                             </button>
                         </div>
-
+                        <Legend />
+                        <LegendTwo />
                     </div>
                 )}
             </Zoom>
+
         </>
     );
 };
