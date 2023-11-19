@@ -1,5 +1,3 @@
-import { margin } from "./Radar.css";
-// QuadrantNav.css.ts
 import { style } from "@vanilla-extract/css";
 
 export const radarWrapper = style({

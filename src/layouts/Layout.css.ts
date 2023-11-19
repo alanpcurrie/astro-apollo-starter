@@ -5,7 +5,7 @@ export const root = style({
   color: "blue",
 });
 
-const breakPoints = {
+export const breakPoints = {
   mobile: "only screen and (max-width: 600px)",
   tablet: "only screen and (min-width: 601px) and (max-width: 900px)",
   desktop: "only screen and (min-width: 901px)",
