@@ -15,7 +15,7 @@ const baseColors = {
     dropShadow: "rgba(0, 0, 0, 0.2))",
     bg: "#0a0a0a"
 };
-
+// work in progress
 const ordinalColorScale = scaleOrdinal({
     domain: ["hold", "Asses", "Trial", "Adopt"],
     range: [baseColors.blue, baseColors.teal, baseColors.darkBlue, baseColors.pink],
