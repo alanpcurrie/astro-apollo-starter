@@ -1,0 +1,12 @@
+[package]
+name = "rust_adr_gen"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+chrono = "0.4"
+colored = "2.0"
+indoc = "2"
+dialoguer = "0.9"
+clap = "3.0"
