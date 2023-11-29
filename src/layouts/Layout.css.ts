@@ -1,4 +1,4 @@
-import { style, styleVariants } from "@vanilla-extract/css";
+import { style, styleVariants,   createContainer } from "@vanilla-extract/css";
 
 export const root = style({
   fontFamily: "Comic Sans Ms",
@@ -46,4 +46,11 @@ export const radarColumn = style({
   width: "100vw",
   position: "relative",
   zIndex: 0,
+});
+
+
+export const sidebarContainer = createContainer();
+
+export const sidebar = style({
+  containerName: sidebarContainer
 });

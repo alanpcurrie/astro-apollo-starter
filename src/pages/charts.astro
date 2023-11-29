@@ -1,0 +1,13 @@
+---
+
+import  ObservablePlot from '@components/PlotlyPlot';
+
+const data = [
+    { category: 'Documentation', amount: 10 },
+    { category: 'Code Quality', amount: 15 },
+    { category: 'Testing', amount: 8 },
+  ];
+
+---
+
+<div><ObservablePlot data={data} client:load  /></div>

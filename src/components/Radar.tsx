@@ -130,7 +130,6 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
 
     const radarColors = ['rgba(0, 120, 212, 0.2)', 'rgba(227, 0, 140, 0.2)', 'rgba(0, 178, 148, 0.2)', 'rgba(255, 185, 0, 0.2)'];
     const radarStrokeColors = ['rgba(0, 120, 212, 0.5)', 'rgba(227, 0, 140, 0.5)', 'rgba(0, 178, 148, 0.5)', 'rgba(255, 185, 0, 0.5)'];
-
     const legendGlyphSize = 16;
     const events = false;
 
@@ -451,32 +450,34 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                         const blipColor = quadrantColors[blip.quadrant];
 
                                         return (
-                                            <React.Fragment key={`blip-${blip}=${i}`}>
-                                                <a className={styles.z} href={`/blip/${blip.id}`}>
-                                                    <Circle
-                                                        cx={x}
-                                                        cy={y}
-                                                        r={12}
-                                                        fill={blipColor}
-                                                        onMouseEnter={(event) =>
-                                                            handleMouseOver(event, blip)
-                                                        }
-                                                        onMouseOut={hideTooltip}
-                                                        href={`/blip/${blip.id}`}
-                                                    />
+                                            <a key={`blip-${blip}=${i}`}
+                                                aria-label={`Details about ${blip.id}`}
+                                                className={styles.z}
+                                                href={`/blip/${blip.id}`}>
+                                                <Circle
+                                                    cx={x}
+                                                    cy={y}
+                                                    r={12}
+                                                    fill={blipColor}
+                                                    onMouseEnter={(event) =>
+                                                        handleMouseOver(event, blip)
+                                                    }
+                                                    onMouseOut={hideTooltip}
+                                                    href={`/blip/${blip.id}`}
+                                                />
 
-                                                    <Text
-                                                        x={x}
-                                                        y={y}
-                                                        fontSize={12}
-                                                        textAnchor="middle"
-                                                        dy=".3em"
-                                                        fill="rgb(34, 39, 46)"
-                                                    >
-                                                        {blip.id}
-                                                    </Text>
-                                                </a>
-                                            </React.Fragment>
+                                                <Text
+                                                    x={x}
+                                                    y={y}
+                                                    fontSize={12}
+                                                    textAnchor="middle"
+                                                    dy=".3em"
+                                                    fill="rgb(34, 39, 46)"
+                                                >
+                                                    {blip.id}
+                                                </Text>
+                                            </a>
+
                                         );
                                     })}
                                 </Group>
@@ -507,8 +508,10 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                             const blipColor = quadrantColors[blip.quadrant];
 
                                             return (
-                                                <React.Fragment key={`blip-${blip}=${i}`}>
-                                                    <a className={styles.z} href={`/blip/${blip.id}`}>
+                                                <React.Fragment key={`mini-map-blip-${blip}=${i}`}>
+                                                    <a className={styles.z}
+                                                        aria-label={`Details about ${blip.id}`}
+                                                        href={`/blip/${blip.id}`}>
                                                         <Circle
                                                             cx={x}
                                                             cy={y}
@@ -518,7 +521,6 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                                                                 handleMouseOver(event, blip)
                                                             }
                                                             onMouseOut={hideTooltip}
-                                                            href={`/blip/${blip.id}`}
                                                         />
                                                         <Text
                                                             x={x}
@@ -616,7 +618,6 @@ const Radar = ({ blips }: { blips: Array<Blip> }) => {
                     </div>
                 )}
             </Zoom>
-
         </>
     );
 };

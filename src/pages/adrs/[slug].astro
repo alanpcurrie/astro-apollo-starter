@@ -1,0 +1,30 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+
+import Layout from "@layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const adrs = await getCollection("adr");
+
+  return adrs.map((adr) => ({
+    params: {
+      slug: adr.slug,
+    },
+    props: { adr },
+  }));
+}
+
+const adr: CollectionEntry<"adr"> = Astro.props.adr;
+
+const { Content } = await adr.render();
+---
+
+<Layout
+  seo={{ title: adr.data.title, description: adr.data.description }}
+  ogImage={{ template: "adr", data: { title: adr.data.title } }}
+>
+  <article class="prose max-w-[80ch] mx-auto mt-12">
+    <Content />
+  </article>
+  <a href={adr.slug}></a>
+</Layout>

@@ -7,27 +7,37 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "prettier": "prettier --write . --plugin=prettier-plugin-astro",
     "astro": "astro",
-    "test": "vitest",
-    "create:adr": "node createAdr.js"
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "create:adr": "node createAdr.js",
+    "prepare": "husky install",
+    "commit": "cz",
+    "cargo:build": "cd rust_adr_gen && cargo build",
+    "cargo:run": "cd rust_adr_gen && cargo run"
   },
   "dependencies": {
     "@apollo/client": "^3.8.6",
     "@astrojs/check": "^0.3.1",
     "@astrojs/mdx": "^1.1.4",
     "@astrojs/react": "^3.0.4",
+    "@astrojs/solid-js": "^3.0.2",
     "@astrojs/tailwind": "^5.0.2",
     "@astrojs/ts-plugin": "^1.2.0",
     "@capsizecss/core": "^3.1.1",
     "@capsizecss/metrics": "^1.2.0",
     "@capsizecss/vanilla-extract": "^1.0.0",
+    "@dessert-box/react": "^0.7.5",
     "@nanostores/logger": "^0.2.4",
     "@nanostores/persistent": "^0.9.1",
     "@nanostores/react": "^0.7.1",
-    "@radix-ui/themes": "^2.0.0",
+    "@observablehq/plot": "^0.6.11",
     "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",
     "@vanilla-extract/css": "^1.13.0",
+    "@vanilla-extract/css-utils": "^0.1.3",
+    "@vanilla-extract/dynamic": "^2.1.0",
     "@vanilla-extract/recipes": "^0.5.1",
     "@vanilla-extract/sprinkles": "^1.6.1",
     "@vanilla-extract/vite-plugin": "^3.9.0",
@@ -46,28 +56,64 @@
     "@visx/zoom": "^3.3.0",
     "astro": "^3.5.2",
     "chalk": "^5.3.0",
+    "chroma-js": "^2.4.2",
     "d3-scale-chromatic": "^3.0.0",
+    "fp-ts": "^2.16.1",
     "nanostores": "^0.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rehype-preset-minify": "^7.0.0",
     "remark-toc": "^9.0.0",
+    "solid-js": "^1.8.5",
     "tailwindcss": "^3.3.5",
     "ts-pattern": "^5.0.5",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.2",
     "vitest": "^0.34.6"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "@tailwindcss/typography": "^0.5.10",
+    "@types/chroma-js": "^2.4.3",
     "@types/d3-scale-chromatic": "^3.0.2",
     "@typescript-eslint/parser": "^6.9.0",
+    "commitizen": "^4.3.0",
+    "commitlint-config-git-commit-emoji": "^1.0.0",
+    "cz-conventional-changelog": "3.3.0",
+    "cz-emoji": "1.3.2-canary.2",
+    "cz-emoji-conventional": "^1.0.2",
     "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-astro": "^0.29.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
+    "husky": "^8.0.0",
     "prettier": "^3.0.3",
     "prettier-plugin-astro": "^0.12.1"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-emoji-conventional"
+    }
+  },
+  "release": {
+    "analyzeCommits": "semantic-release-conventional-commits",
+    "path": "semantic-release-conventional-commits",
+    "majorTypes": [
+      "major",
+      "breaking"
+    ],
+    "minorTypes": [
+      "feat",
+      "minor"
+    ],
+    "patchTypes": [
+      "fix",
+      "patch"
+    ],
+    "mergePattern": "/^Merge pull request #(\\d+) from (.*)$/",
+    "mergeCorrespondence": "['id', 'source']"
   }
 }

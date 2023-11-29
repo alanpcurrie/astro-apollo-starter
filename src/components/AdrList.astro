@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Link from "./Link.astro";
+
+export type Props = {
+  adrs: CollectionEntry<"adr">[];
+  start?: number;
+};
+
+const { adrs, start = 1 } = Astro.props;
+---
+
+<ol class="mt-4 px-10 space-y-2 list-decimal" start={start}>
+  {
+    adrs.map((adr) => (
+      <li>
+        <Link class="flex justify-between" href={`/adr/${adr.slug}`}>
+          {adr.data.title}
+          <span class="text-gray-400">
+            {adr.data.date.toUTCString().slice(0, -13)}
+          </span>
+        </Link>
+      </li>
+    ))
+  }
+</ol>

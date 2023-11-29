@@ -17,7 +17,7 @@ export const getStaticPaths = (async () => {
   return blips.map((blip) => {
     return {
       params: { blipId: blip.id },
-      props: { propId: blip.id },
+      // props: { propId: blip.id },
     };
   });
 }) satisfies GetStaticPaths;
