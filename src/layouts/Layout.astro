@@ -12,6 +12,7 @@ import { ViewTransitions } from "astro:transitions";
     <title>Tech Radar</title>
     <ViewTransitions />
   </head>
+
   <body>
     <div class:list={[styles.container]}>
       <div class:list={[styles.sideColumn]}>
@@ -19,9 +20,6 @@ import { ViewTransitions } from "astro:transitions";
       </div>
       <div class:list={[styles.radarColumn]}>
         <slot name="center" />
-        <div class:list={[styles.sideColumn]}>
-          <slot name="right" />
-        </div>
       </div>
     </div>
   </body>

@@ -18,8 +18,8 @@ import * as styles from "./Radar.css";
 
 const Radar = ({ blips }: { blips: Array<Blip> }) => {
     const bg = "#0a0a0a";
-    const width = 600;
-    const height = 600;
+    const width = 800;
+    const height = 800;
     const centerX = width / 2;
     const centerY = height / 2;
     const rings = ["Adopt", "Trial", "Assess", "Hold"];

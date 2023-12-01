@@ -226,9 +226,9 @@ export const relative = style({
 export const z = style({
   position: "relative",
   zIndex: 1000,
-  width: '30px',
-  height: '30px',
-  display: 'inline-block',
+  width: "30px",
+  height: "30px",
+  display: "inline-block",
   // ':focus': {
   //   outline: '2px solid blue',
   //   backgroundColor: 'rgba(0, 0, 255, 0.2)',

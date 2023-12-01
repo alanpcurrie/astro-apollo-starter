@@ -16,8 +16,6 @@ const blips = blipsStore.get();
 ---
 
 <Layout>
-  <QuadrantNav slot="center" />
-  <!-- <h1 slot="left">Blips</h1> -->
+  <QuadrantNav slot="left" />
   <Radar slot="center" blips={blips} client:load />
-  <!-- <h1 slot="right">Blips</h1> -->
 </Layout>

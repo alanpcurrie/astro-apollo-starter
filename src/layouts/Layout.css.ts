@@ -1,4 +1,4 @@
-import { style, styleVariants,   createContainer } from "@vanilla-extract/css";
+import { style, styleVariants, createContainer } from "@vanilla-extract/css";
 
 export const root = style({
   fontFamily: "Comic Sans Ms",
@@ -26,16 +26,31 @@ export const twStyle = style(["text-[hsl(280,100%,70%)]"]);
 
 export const container = style({
   display: "grid",
-  gridTemplateColumns: "1fr 3fr 1fr",
   gap: "1rem",
   background: "#0E1218",
-  // height: "100vh",
+  "@media": {
+    [breakPoints.mobile]: {
+      gridTemplateColumns: "1fr",
+      gridTemplateRows: "auto 3fr",
+    },
+    [breakPoints.tablet]: {
+      gridTemplateColumns: "1fr 3fr",
+    },
+    [breakPoints.desktop]: {
+      gridTemplateColumns: "1fr 3fr 1fr",
+    },
+  },
 });
 export const sideColumn = style({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
+  "@media": {
+    [breakPoints.mobile]: {
+      order: -1, // Puts the sidebar on top on mobile
+    },
+  },
 });
 
 export const radarColumn = style({
@@ -43,14 +58,14 @@ export const radarColumn = style({
   alignItems: "center",
   justifyContent: "center",
   height: "100vh",
-  width: "100vw",
+  // width: "100vw",
   position: "relative",
+  marginLeft: "4rem",
   zIndex: 0,
 });
-
 
 export const sidebarContainer = createContainer();
 
 export const sidebar = style({
-  containerName: sidebarContainer
+  containerName: sidebarContainer,
 });

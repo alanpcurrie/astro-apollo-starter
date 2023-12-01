@@ -1,17 +1,19 @@
 import { style } from "@vanilla-extract/css";
 
 export const radarWrapper = style({
-  position: "absolute",
-  width: "100vw",
+  width: "24vw",
   height: "100vh",
   maxWidth: "1200px",
-  maxHeight: "1200px",
+  minHeight: "100vh",
   margin: "auto",
-  zIndex: -1,
+  background: "black",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  padding: "1rem",
 });
 
 export const quadrantsOverlay = style({
-  position: "relative",
   top: 0,
   left: 0,
   right: 0,
@@ -19,9 +21,6 @@ export const quadrantsOverlay = style({
 });
 
 export const quadrant = style({
-  width: "25%",
-  height: "25%",
-  position: "relative",
   cursor: "pointer",
   transition: "background-color 0.3s",
   padding: "1rem",
