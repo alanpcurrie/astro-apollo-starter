@@ -1,7 +1,13 @@
 import { style } from "@vanilla-extract/css";
 
+export const breakPoints = {
+  mobile: "only screen and (max-width: 600px)",
+  tablet: "only screen and (min-width: 601px) and (max-width: 900px)",
+  desktop: "only screen and (min-width: 901px)",
+};
+
 export const radarWrapper = style({
-  width: "24vw",
+  width: "280px",
   height: "100vh",
   maxWidth: "1200px",
   minHeight: "100vh",
@@ -9,18 +15,48 @@ export const radarWrapper = style({
   background: "black",
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
+  justifyContent: "space-between",
   padding: "1rem",
+  "@media": {
+    [breakPoints.mobile]: {
+      flexDirection: "row", // Change to row on mobile
+      minHeight: "250px",
+      height: "250px",
+      width: "100%",
+    },
+  },
 });
 
 export const quadrantsOverlay = style({
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
+  flex: 1,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  "@media": {
+    [breakPoints.mobile]: {
+      flexDirection: "row", // Change to row on mobile
+      height: "150px",
+      // width: "100%",
+    },
+  },
+});
+
+export const firstQuadrant = style({
+  justifyContent: "flex-start",
+  flex: "1",
 });
 
 export const quadrant = style({
+  "@media": {
+    [breakPoints.mobile]: {
+      flex: "1", // Each quadrant takes equal space on mobile
+      height: "150px",
+      // width: "100%",
+    },
+  },
+  ":first-child": firstQuadrant,
+  display: "flex",
+  flexDirection: "column",
   cursor: "pointer",
   transition: "background-color 0.3s",
   padding: "1rem",
@@ -76,6 +112,7 @@ export const bottomRight = style({
 
 export const headingOne = style({
   fontSize: "2rem",
+  padding: "1rem",
 });
 
 export const radStyle = style({
