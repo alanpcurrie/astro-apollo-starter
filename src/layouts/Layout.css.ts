@@ -1,4 +1,4 @@
-import { style, styleVariants, createContainer } from "@vanilla-extract/css";
+import { createContainer, style, styleVariants } from "@vanilla-extract/css";
 
 export const root = style({
   fontFamily: "Comic Sans Ms",
@@ -8,7 +8,8 @@ export const root = style({
 export const breakPoints = {
   mobile: "only screen and (max-width: 600px)",
   tablet: "only screen and (min-width: 601px) and (max-width: 900px)",
-  desktop: "only screen and (min-width: 901px)",
+  desktop: "only screen and (min-width: 901px) and (max-width: 1200px)",
+  desktopXl: "only screen and (min-width: 1200px)",
 };
 
 export const size = styleVariants({
@@ -37,10 +38,14 @@ export const container = style({
       gridTemplateColumns: "1fr 3fr",
     },
     [breakPoints.desktop]: {
-      gridTemplateColumns: "1fr 3fr 1fr",
+      gridTemplateColumns: "200px 1fr",
+    },
+    [breakPoints.desktopXl]: {
+      gridTemplateColumns: "200px 1fr",
     },
   },
 });
+
 export const sideColumn = style({
   display: "flex",
   flexDirection: "column",
@@ -48,17 +53,15 @@ export const sideColumn = style({
   justifyContent: "center",
   "@media": {
     [breakPoints.mobile]: {
-      order: -1, // Puts the sidebar on top on mobile
+      order: -1,
     },
   },
 });
-
 export const radarColumn = style({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   height: "100vh",
-  // width: "100vw",
   position: "relative",
   marginLeft: "4rem",
   zIndex: 0,

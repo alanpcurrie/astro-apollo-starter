@@ -53,7 +53,7 @@ export const colors = createGlobalTheme(":root", {
   primary: "#005f73",
   secondary: "#0a9396",
   accent: "#94d2bd",
-  background: "#e9d8a6",
+  background: "#000",
   text: "#3d405b",
   purpleLightest: "#e4d7f5",
   purpleLight: "#cbb1e4",
